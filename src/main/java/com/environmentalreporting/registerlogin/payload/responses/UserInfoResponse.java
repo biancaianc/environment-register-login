@@ -9,11 +9,26 @@ public class UserInfoResponse {
     private String email;
     private List<String> roles;
 
-    public UserInfoResponse(Long id, String username, String email, List<String> roles) {
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public Long getPoints() {
+        return points;
+    }
+
+    public void setPoints(Long points) {
+        this.points = points;
+    }
+
+    private Long points;
+
+    public UserInfoResponse(Long id, String username, String email, List<String> roles, Long points) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.points=points;
     }
 
     public Long getId() {
