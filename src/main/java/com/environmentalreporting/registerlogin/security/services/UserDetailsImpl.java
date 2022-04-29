@@ -1,20 +1,17 @@
 package com.environmentalreporting.registerlogin.security.services;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import com.environmentalreporting.registerlogin.models.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.stereotype.Service;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
+    private String role;
     private Long id;
     private String username;
     private String email;
@@ -30,31 +27,27 @@ public class UserDetailsImpl implements UserDetails {
     private Long points;
     @JsonIgnore
     private String password;
-    private Collection<? extends GrantedAuthority> authorities;
     public UserDetailsImpl(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities,Long points ) {
+                           String authorities, Long points ) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.authorities = authorities;
+        this.role = authorities;
         this.points=points;
     }
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toList());
         return new UserDetailsImpl(
                         user.getId(),
                         user.getUsername(),
                         user.getEmail(),
                         user.getPassword(),
-                authorities,
+                        user.getRole(),
                 user.getPoints());
     }
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+
+    public String getRole() {
+        return role;
     }
     public Long getId() {
         return id;
@@ -62,6 +55,12 @@ public class UserDetailsImpl implements UserDetails {
     public String getEmail() {
         return email;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     @Override
     public String getPassword() {
         return password;

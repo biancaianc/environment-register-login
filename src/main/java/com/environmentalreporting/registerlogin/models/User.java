@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "users", schema = "env",
+@Table(name = "users", schema = "env_schema",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
@@ -37,18 +37,20 @@ public class User {
 
     private Long points;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinTable(name = "user_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"), schema = "env_schema"
+//    )
+    private String role;
     public User() {
     }
-    public User(String username, String email, String password, Long points) {
+    public User(String username, String email, String password, Long points, String role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.points=points;
+        this.role=role;
     }
     public Long getId() {
         return id;
@@ -74,11 +76,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Set<Role> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
     public Long getPoints() {
         return points;

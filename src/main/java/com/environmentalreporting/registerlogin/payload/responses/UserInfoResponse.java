@@ -7,10 +7,10 @@ public class UserInfoResponse {
     private Long id;
     private String username;
     private String email;
-    private List<String> roles;
+    private String role;
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getPoints() {
@@ -23,11 +23,11 @@ public class UserInfoResponse {
 
     private Long points;
 
-    public UserInfoResponse(Long id, String username, String email, List<String> roles, Long points) {
+    public UserInfoResponse(Long id, String username, String email, String role, Long points) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.roles = roles;
+        this.role = role;
         this.points=points;
     }
 
@@ -55,8 +55,8 @@ public class UserInfoResponse {
         this.username = username;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getRoles() {
+        return role;
     }
 }
 
