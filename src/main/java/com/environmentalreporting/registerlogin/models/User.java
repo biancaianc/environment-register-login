@@ -43,6 +43,10 @@ public class User {
 //            inverseJoinColumns = @JoinColumn(name = "role_id"), schema = "env_schema"
 //    )
     private String role;
+
+    @OneToMany(mappedBy="user")
+    private Set<Report> reports;
+
     public User() {
     }
     public User(String username, String email, String password, Long points, String role) {
@@ -52,6 +56,8 @@ public class User {
         this.points=points;
         this.role=role;
     }
+
+
     public Long getId() {
         return id;
     }

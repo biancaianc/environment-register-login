@@ -16,8 +16,8 @@ public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     @Value("${bezkoder.app.jwtSecret}")
     private String jwtSecret;
-    @Value("${bezkoder.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+//    @Value("${bezkoder.app.jwtExpirationMs}")
+//    private int jwtExpirationMs;
     @Value("${bezkoder.app.jwtCookieName}")
     private String jwtCookie;
     public String getJwtFromCookies(HttpServletRequest request) {
@@ -62,7 +62,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                //.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
