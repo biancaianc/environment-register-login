@@ -1,5 +1,6 @@
 package com.environmentalreporting.registerlogin.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class User {
     private String role;
 
     @OneToMany(mappedBy="user")
+    @JsonManagedReference
     private Set<Report> reports;
 
     public User() {

@@ -1,11 +1,13 @@
 package com.environmentalreporting.registerlogin.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Data
@@ -18,18 +20,18 @@ public class Report {
 
     private String name;
 
-    @CreationTimestamp
-    private Timestamp date;
+    private Date date;
 
     private String city;
 
     private String region;
 
-    private Long latitude;
+    private Float latitude;
 
-    private Long longitude;
+    private Float longitude;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -41,9 +43,9 @@ public class Report {
     @Column(length = 20)
     private EReport type;
 
-    public Report(String name, Timestamp date, String city, String region, Long latitude, Long longitude, User user, boolean approved, String description, String type) {
+    public Report(String name, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type) {
         this.name = name;
-        this.date = date;
+        this.date = new Date();
         this.city = city;
         this.region = region;
         this.latitude = latitude;
