@@ -1,5 +1,6 @@
 package com.environmentalreporting.registerlogin.controllers;
 
+import com.environmentalreporting.registerlogin.exceptions.AlreadyReportedInThatArea;
 import com.environmentalreporting.registerlogin.models.EReport;
 import com.environmentalreporting.registerlogin.models.Report;
 import com.environmentalreporting.registerlogin.models.User;
@@ -7,6 +8,7 @@ import com.environmentalreporting.registerlogin.payload.requests.ReportRequest;
 import com.environmentalreporting.registerlogin.repositories.ReportRepository;
 import com.environmentalreporting.registerlogin.repositories.UserRepository;
 import com.environmentalreporting.registerlogin.security.jwt.JwtUtils;
+import com.environmentalreporting.registerlogin.security.services.ReportService;
 import com.environmentalreporting.registerlogin.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +35,8 @@ public class ReportController {
     JwtUtils jwtUtils;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ReportService reportService;
 
     @GetMapping("/reports")
     public ResponseEntity<List<Report>> getAllReports() {
@@ -60,8 +64,12 @@ public class ReportController {
     public ResponseEntity<Report> createReport(@Valid @RequestBody ReportRequest report) {
         try {
             Report entity = new Report(report.getName(), report.getCity(), report.getRegion(), report.getLatitude(), report.getLongitude(), report.getUser(), report.isApproved(), report.getDescription(), report.getType());
+            reportService.validate(entity);
             reportRepository.save(entity);
             return new ResponseEntity<>(entity, HttpStatus.CREATED);
+        }catch (AlreadyReportedInThatArea alreadyReportedInThatArea){
+            System.out.println(alreadyReportedInThatArea.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
