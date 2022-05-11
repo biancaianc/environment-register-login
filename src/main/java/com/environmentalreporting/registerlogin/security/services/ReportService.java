@@ -2,12 +2,13 @@ package com.environmentalreporting.registerlogin.security.services;
 
 import com.environmentalreporting.registerlogin.exceptions.AlreadyReportedInThatArea;
 import com.environmentalreporting.registerlogin.models.Report;
+import com.environmentalreporting.registerlogin.models.User;
+import com.environmentalreporting.registerlogin.payload.requests.ReportRequest;
 import com.environmentalreporting.registerlogin.repositories.ReportRepository;
+import com.environmentalreporting.registerlogin.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,6 +17,12 @@ import java.util.stream.Collectors;
 public class ReportService {
     @Autowired
     ReportRepository reportRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ReportService reportService;
 
     public boolean validate(Report report) throws AlreadyReportedInThatArea {
 
@@ -43,6 +50,26 @@ public class ReportService {
     private void validateLatAndLong(Report report, List<Report> reportsFromUser) throws AlreadyReportedInThatArea {
         List<Report> collect = reportsFromUser.stream().filter(x -> Math.abs(x.getLatitude() - report.getLatitude()) < 0.0001 || Math.abs(x.getLongitude() - report.getLongitude()) < 0.0001).collect(Collectors.toList());
         if(!collect.isEmpty())
-             throw new AlreadyReportedInThatArea("Ai făcut deja o raportare în zonă");
+             throw new AlreadyReportedInThatArea(report.getUser().getUsername()+ " already reported in that area");
+    }
+
+    public void approveReport(Report report) {
+        report.setApproved(true);
+        reportRepository.save(report);
+    }
+
+    public void deleteReport(long id) {
+        reportRepository.deleteById(id);
+    }
+
+    public Report createReport(ReportRequest report) throws Exception {
+        Optional<User> user = userRepository.findByUsername(report.getUser());
+        if (user.isPresent()) {
+            Report entity = new Report(report.getName(), report.getCity(), report.getRegion(), report.getLatitude(), report.getLongitude(), user.get(), report.isApproved(), report.getDescription(), report.getType());
+            reportService.validate(entity);
+            reportRepository.save(entity);
+            return entity;
+        }
+        else throw new Exception("Invalid user");
     }
 }

@@ -1,7 +1,7 @@
 package com.environmentalreporting.registerlogin.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
+import java.util.Optional;
 import javax.validation.Valid;
 
 import com.environmentalreporting.registerlogin.models.User;
@@ -14,6 +14,7 @@ import com.environmentalreporting.registerlogin.security.jwt.JwtUtils;
 import com.environmentalreporting.registerlogin.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,13 +22,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -35,12 +32,11 @@ public class AuthenticationController {
     AuthenticationManager authenticationManager;
     @Autowired
     UserRepository userRepository;
-//    @Autowired
-//    RoleRepository roleRepository;
     @Autowired
     PasswordEncoder encoder;
     @Autowired
     JwtUtils jwtUtils;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
@@ -55,6 +51,7 @@ public class AuthenticationController {
                         userDetails.getRole(),
                         userDetails.getPoints()));
     }
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
@@ -65,32 +62,13 @@ public class AuthenticationController {
         }
         // Create new user's account
 
-
-//        if (strRoles==null) {
-//            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//            roles.add(userRole);
-//        } else {
-//            strRoles.forEach(role -> {
-//                switch (role) {
-//                    case "admin":
-//                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(adminRole);
-//                        break;
-//                    default:
-//                       Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                       roles.add(userRole);
-//                }
-//            });
-//        }
         User user = new User(registerRequest.getUsername(),
                 registerRequest.getEmail(),
                 encoder.encode(registerRequest.getPassword()), 0L, "USER");
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();

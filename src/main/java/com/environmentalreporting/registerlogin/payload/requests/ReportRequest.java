@@ -20,7 +20,7 @@ public class ReportRequest {
 
     private Float longitude;
 
-    private User user;
+    private String user;
 
     private boolean approved = false;
 
@@ -28,7 +28,7 @@ public class ReportRequest {
 
     private String type;
 
-    public ReportRequest(String name, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type) {
+    public ReportRequest(String name, String city, String region, Float latitude, Float longitude, String user, boolean approved, String description, String type) {
         this.name = name;
         this.city = city;
         this.region = region;

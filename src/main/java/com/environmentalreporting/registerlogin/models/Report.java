@@ -3,6 +3,8 @@ package com.environmentalreporting.registerlogin.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -32,6 +34,7 @@ public class Report {
 
     @ManyToOne
     @JsonBackReference
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
