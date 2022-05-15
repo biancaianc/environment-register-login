@@ -10,6 +10,7 @@ import com.environmentalreporting.registerlogin.repositories.ReportRepository;
 import com.environmentalreporting.registerlogin.repositories.UserRepository;
 import com.environmentalreporting.registerlogin.security.jwt.JwtUtils;
 import com.environmentalreporting.registerlogin.security.services.ReportService;
+import com.zaxxer.hikari.util.FastList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600, allowedHeaders = "true")
 @RequestMapping("/api/report")
 public class ReportController {
     @Autowired
@@ -39,13 +39,11 @@ public class ReportController {
         try {
             reportRepository.findAll().forEach(reports::add);
             reports.forEach(x -> reportResponses.add(new ReportResponse(x.getId(), x.getName(), x.getDate(), x.getCity(), x.getRegion(),
-                    x.getLatitude(), x.getLongitude(), x.getUser(), x.isApproved(), x.getDescription(), x.getType().name())));
-
+                    x.getLatitude(), x.getLongitude(), x.getUser(), x.isApproved(), x.getDescription(), x.getType().name(), x.getImagePath())));
             return new ResponseEntity<>(reportResponses, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @GetMapping("/reportTypes")
@@ -93,12 +91,15 @@ public class ReportController {
     }
 
     @GetMapping("/reports/{id}")
-    public ResponseEntity<List<Report>> getReportsByUserId(@PathVariable("id") long id) {
+    public ResponseEntity<List<ReportResponse>> getReportsByUserId(@PathVariable("id") long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             Optional<List<Report>> reporterData = reportRepository.findByUser(user.get());
             if (reporterData.isPresent()) {
-                return new ResponseEntity<>(reporterData.get(), HttpStatus.OK);
+                List<ReportResponse> reportResponses = new ArrayList<>();
+                reporterData.get().forEach(x -> reportResponses.add(new ReportResponse(x.getId(), x.getName(), x.getDate(), x.getCity(), x.getRegion(),
+                        x.getLatitude(), x.getLongitude(), x.getUser(), x.isApproved(), x.getDescription(), x.getType().name(), x.getImagePath())));
+                return new ResponseEntity<>(reportResponses, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

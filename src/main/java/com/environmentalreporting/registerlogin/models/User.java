@@ -3,13 +3,11 @@ package com.environmentalreporting.registerlogin.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -38,11 +36,6 @@ public class User {
 
     private Long points;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinTable(name = "user_roles",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id"), schema = "env_schema"
-//    )
     private String role;
 
     @OneToMany(mappedBy="user")

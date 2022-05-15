@@ -25,8 +25,6 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-//        securedEnabled = true,
-//        jsr250Enabled = true,
         prePostEnabled = true)
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -60,9 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // This Origin header you can see that in Network tab
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http:/url_2"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://angularbucker.s3-website.eu-central-1.amazonaws.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("content-type"));
+        configuration.setAllowedHeaders(Arrays.asList("content-type", "undefined", "multipart/form-data"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -74,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**", "/api/report/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**", "/api/report/**", "/api/image/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

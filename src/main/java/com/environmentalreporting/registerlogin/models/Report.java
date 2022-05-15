@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -46,7 +44,9 @@ public class Report {
     @Column(length = 20)
     private EReport type;
 
-    public Report(String name, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type) {
+    private String imagePath;
+
+    public Report(String name, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type, String imagePath) {
         this.name = name;
         this.date = new Date();
         this.city = city;
@@ -57,6 +57,7 @@ public class Report {
         this.approved = approved;
         this.description = description;
         this.type = EReport.valueOf(type);
+        this.imagePath = imagePath;
     }
 
     public Report() {

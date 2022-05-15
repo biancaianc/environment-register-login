@@ -1,6 +1,5 @@
 package com.environmentalreporting.registerlogin.payload.requests;
 
-import com.environmentalreporting.registerlogin.models.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +27,9 @@ public class ReportRequest {
 
     private String type;
 
-    public ReportRequest(String name, String city, String region, Float latitude, Float longitude, String user, boolean approved, String description, String type) {
+    private String imageName;
+
+    public ReportRequest(String name, String city, String region, Float latitude, Float longitude, String user, boolean approved, String description, String type, String imageName) {
         this.name = name;
         this.city = city;
         this.region = region;
@@ -38,6 +39,7 @@ public class ReportRequest {
         this.approved = approved;
         this.description = description;
         this.type = type;
+        this.imageName = imageName;
     }
 
 }
