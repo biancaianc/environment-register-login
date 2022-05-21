@@ -14,11 +14,11 @@ import io.jsonwebtoken.*;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    @Value("${bezkoder.app.jwtSecret}")
+    @Value("${bianca.app.jwtSecret}")
     private String jwtSecret;
-//    @Value("${bezkoder.app.jwtExpirationMs}")
+//    @Value("${bianca.app.jwtExpirationMs}")
 //    private int jwtExpirationMs;
-    @Value("${bezkoder.app.jwtCookieName}")
+    @Value("${bianca.app.jwtCookieName}")
     private String jwtCookie;
     public String getJwtFromCookies(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, jwtCookie);

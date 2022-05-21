@@ -11,6 +11,7 @@ import com.environmentalreporting.registerlogin.repositories.UserRepository;
 import com.environmentalreporting.registerlogin.security.jwt.JwtUtils;
 import com.environmentalreporting.registerlogin.security.services.ReportService;
 import com.zaxxer.hikari.util.FastList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/report")
+@Slf4j
 public class ReportController {
     @Autowired
     ReportRepository reportRepository;
@@ -71,8 +73,9 @@ public class ReportController {
     }
 
     @GetMapping("/approveReport/{id}")
-    public ResponseEntity<String> updateReport(@PathVariable("id") long id) {
+    public ResponseEntity<String> updateReport(@PathVariable("id") Long id) {
         Optional<Report> report = reportRepository.findById(id);
+        log.info("Approve report with id " + id);
         if (report.isPresent()) {
             reportService.approveReport(report.get());
             return new ResponseEntity<>("approved", HttpStatus.OK);

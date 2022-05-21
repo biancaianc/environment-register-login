@@ -68,6 +68,9 @@ public class ReportService {
     public Report createReport(ReportRequest report) throws Exception {
         Optional<User> user = userRepository.findByUsername(report.getUser());
         if (user.isPresent()) {
+            User u = user.get();
+            u.setPoints(u.getPoints() + 3);
+            userRepository.save(u);
             Report entity = new Report(report.getName(), report.getCity(), report.getRegion(), report.getLatitude(), report.getLongitude(), user.get(), report.isApproved(), report.getDescription(), report.getType(), report.getImageName());
             reportService.validate(entity);
             reportRepository.save(entity);

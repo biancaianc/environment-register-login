@@ -1,9 +1,8 @@
 package com.environmentalreporting.registerlogin.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -39,8 +38,11 @@ public class User {
     private String role;
 
     @OneToMany(mappedBy="user")
-    @JsonManagedReference
     private Set<Report> reports;
+
+    @ManyToMany(mappedBy = "users")
+    Set<Event> events;
+
 
     public User() {
     }
