@@ -74,7 +74,6 @@ public class ReportService {
             Report entity = new Report(report.getName(), report.getCity(), report.getRegion(), report.getLatitude(), report.getLongitude(), user.get(), report.isApproved(), report.getDescription(), report.getType(), report.getImageName());
             reportService.validate(entity);
             reportRepository.save(entity);
-            System.out.println("HEREEE");
             return entity;
         }
         else throw new Exception("Invalid user");

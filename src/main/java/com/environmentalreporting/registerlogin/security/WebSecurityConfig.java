@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // This Origin header you can see that in Network tab
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://angularbucker.s3-website.eu-central-1.amazonaws.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://angularbucker.s3-website.eu-central-1.amazonaws.com", "https://tubular-paletas-527ad1.netlify.app"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("content-type", "undefined", "multipart/form-data"));
         configuration.setAllowCredentials(true);
@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**", "/api/report/**", "/api/image/**", "/api/event/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**", "/api/report/**", "/api/image/**", "/api/event/**", "/api/news/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
