@@ -29,4 +29,13 @@ public class NewsService {
         else throw new Exception("Invalid user");
 
     }
+
+    public News getNews(Long id) {
+        News news = null;
+        Optional<News> byId = newsRepository.findById(id);
+        if (byId.isPresent()) {
+            news = byId.get();
+        }
+        return news;
+    }
 }
