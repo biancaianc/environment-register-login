@@ -22,7 +22,6 @@ public class ImageController {
 
     @GetMapping("/getImage/{id}")
     public ResponseEntity<byte[]> getImageById(@PathVariable("id") String imageId){
-
         ByteArrayOutputStream download = imageService.getImage(imageId);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG)
                 .body(download.toByteArray());
@@ -38,6 +37,7 @@ public class ImageController {
         return multipartFile.getOriginalFilename();
 
     }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleConstraintViolationException(ConstraintViolationException e) {

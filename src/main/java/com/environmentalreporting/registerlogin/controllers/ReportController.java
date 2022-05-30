@@ -10,7 +10,6 @@ import com.environmentalreporting.registerlogin.repositories.ReportRepository;
 import com.environmentalreporting.registerlogin.repositories.UserRepository;
 import com.environmentalreporting.registerlogin.security.jwt.JwtUtils;
 import com.environmentalreporting.registerlogin.security.services.ReportService;
-import com.zaxxer.hikari.util.FastList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +40,7 @@ public class ReportController {
         try {
             reportRepository.findAll().forEach(reports::add);
             reports.forEach(x -> reportResponses.add(new ReportResponse(x.getId(), x.getName(), x.getDate(), x.getCity(), x.getRegion(),
-                    x.getLatitude(), x.getLongitude(), x.getUser(), x.isApproved(), x.getDescription(), x.getType().name(), x.getImagePath())));
+                    x.getLatitude(), x.getLongitude(), x.getUser(), x.isApproved(), x.getDescription(), x.getType().name(), x.getImagePath(), x.getReactions())));
             return new ResponseEntity<>(reportResponses, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -62,7 +61,7 @@ public class ReportController {
     @PostMapping("/report")
     public ResponseEntity<Report> createReport(@Valid @RequestBody ReportRequest report) {
         try {
-            return new ResponseEntity<>(reportService.createReport(report),HttpStatus.CREATED);
+            return new ResponseEntity<>(reportService.createReport(report), HttpStatus.CREATED);
         } catch (AlreadyReportedInThatArea alreadyReportedInThatArea) {
             System.out.println(alreadyReportedInThatArea.getMessage());
             return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
@@ -101,13 +100,32 @@ public class ReportController {
             if (reporterData.isPresent()) {
                 List<ReportResponse> reportResponses = new ArrayList<>();
                 reporterData.get().forEach(x -> reportResponses.add(new ReportResponse(x.getId(), x.getName(), x.getDate(), x.getCity(), x.getRegion(),
-                        x.getLatitude(), x.getLongitude(), x.getUser(), x.isApproved(), x.getDescription(), x.getType().name(), x.getImagePath())));
+                        x.getLatitude(), x.getLongitude(), x.getUser(), x.isApproved(), x.getDescription(), x.getType().name(), x.getImagePath(), x.getReactions())));
                 return new ResponseEntity<>(reportResponses, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/addReaction/{id}")
+    public ResponseEntity<Report> updateReactions(@PathVariable("id") long id) {
+        try {
+            return new ResponseEntity<>(reportService.updateReactions(id), HttpStatus.CREATED);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("reportById/{id}")
+    public ResponseEntity<Report> getReportById(@PathVariable("id") long id) {
+        try {
+            return new ResponseEntity<>(reportService.getReport(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

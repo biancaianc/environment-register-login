@@ -4,6 +4,7 @@ import com.environmentalreporting.registerlogin.exceptions.AlreadyReportedInThat
 import com.environmentalreporting.registerlogin.models.Report;
 import com.environmentalreporting.registerlogin.models.User;
 import com.environmentalreporting.registerlogin.payload.requests.ReportRequest;
+import com.environmentalreporting.registerlogin.payload.responses.ReportResponse;
 import com.environmentalreporting.registerlogin.repositories.ReportRepository;
 import com.environmentalreporting.registerlogin.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,11 +72,35 @@ public class ReportService {
             User u = user.get();
             u.setPoints(u.getPoints() + 3);
             userRepository.save(u);
-            Report entity = new Report(report.getName(), report.getCity(), report.getRegion(), report.getLatitude(), report.getLongitude(), user.get(), report.isApproved(), report.getDescription(), report.getType(), report.getImageName());
+            Report entity = new Report(report.getName(), report.getCity(), report.getRegion(), report.getLatitude(), report.getLongitude(), user.get(), report.isApproved(), report.getDescription(), report.getType(), report.getImageName(), 0);
             reportService.validate(entity);
             reportRepository.save(entity);
             return entity;
         }
         else throw new Exception("Invalid user");
+    }
+
+    public Report updateReactions(Long id) throws Exception {
+        Optional<Report> byId = reportRepository.findById(id);
+        if (byId.isPresent()) {
+            Report report = byId.get();
+            if(report.getReactions() != null)
+                 report.setReactions(report.getReactions() + 1);
+            else
+                report.setReactions(1);
+
+            Report entity = new Report(report.getName(), report.getCity(), report.getRegion(), report.getLatitude(), report.getLongitude(), report.getUser(), report.isApproved(), report.getDescription(), report.getType().name(), report.getImagePath(), report.getReactions());
+            reportRepository.save(entity);
+            return entity;
+        }
+        throw new Exception("Error at update reactions");
+    }
+
+    public Report getReport(long id) throws Exception {
+        Optional<Report> byId = reportRepository.findById(id);
+        if(byId.isPresent()){
+            return byId.get();
+        }
+        throw  new Exception("Report not found");
     }
 }

@@ -1,8 +1,6 @@
 package com.environmentalreporting.registerlogin.payload.requests;
 
 
-import java.util.Set;
-
 import javax.validation.constraints.*;
 
 public class RegisterRequest {

@@ -36,7 +36,9 @@ public class ReportResponse {
 
     private String imageName;
 
-    public ReportResponse(Long id, String name, Date date, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type, String imageName) {
+    private Integer reactions;
+
+    public ReportResponse(Long id, String name, Date date, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type, String imageName, Integer reactions) {
         this.id=id;
         this.name = name;
         this.date = new Date();
@@ -49,6 +51,7 @@ public class ReportResponse {
         this.description = description;
         this.type = EReport.valueOf(type);
         this.imageName = imageName;
+        this.reactions = reactions;
     }
 
 

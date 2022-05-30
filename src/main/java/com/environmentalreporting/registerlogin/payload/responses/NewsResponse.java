@@ -1,5 +1,6 @@
 package com.environmentalreporting.registerlogin.payload.responses;
 
+import com.environmentalreporting.registerlogin.models.Comment;
 import com.environmentalreporting.registerlogin.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,4 +30,6 @@ public class NewsResponse {
     private User user;
 
     private String type;
+
+    private Set<Comment> comments;
 }

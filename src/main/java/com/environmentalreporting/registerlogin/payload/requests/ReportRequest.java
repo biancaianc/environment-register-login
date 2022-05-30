@@ -29,7 +29,9 @@ public class ReportRequest {
 
     private String imageName;
 
-    public ReportRequest(String name, String city, String region, Float latitude, Float longitude, String user, boolean approved, String description, String type, String imageName) {
+    private Integer reactions;
+
+    public ReportRequest(String name, String city, String region, Float latitude, Float longitude, String user, boolean approved, String description, String type, String imageName, Integer reactions) {
         this.name = name;
         this.city = city;
         this.region = region;
@@ -40,6 +42,7 @@ public class ReportRequest {
         this.description = description;
         this.type = type;
         this.imageName = imageName;
+        this.reactions = reactions;
     }
 
 }

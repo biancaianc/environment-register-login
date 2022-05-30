@@ -5,6 +5,7 @@ import com.environmentalreporting.registerlogin.models.Event;
 import com.environmentalreporting.registerlogin.models.User;
 import com.environmentalreporting.registerlogin.payload.requests.EventRequest;
 import com.environmentalreporting.registerlogin.payload.requests.UserRequest;
+import com.environmentalreporting.registerlogin.payload.responses.EventResponse;
 import com.environmentalreporting.registerlogin.repositories.EventRepository;
 import com.environmentalreporting.registerlogin.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,19 @@ public class EventService {
         e.setUsers(users);
         eventRepository.save(e);
         return e;
+    }
+
+    public List<EventResponse> getEvents() {
+        List<EventResponse> eventResponses = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
+        eventRepository.findAll().forEach(events::add);
+        events.forEach(x -> eventResponses.add(new EventResponse(x.getId(), x.getTitle(), x.getDescription(),
+                x.getDate(), x.getMaxNumberOfParticipants(), x.getLocation(), x.getTelephone(), x.getDuration(), x.getImageName(), x.getUsers())));
+        return eventResponses;
+    }
+
+    public void deleteEvent(long id) {
+        eventRepository.deleteById(id);
     }
 }
 

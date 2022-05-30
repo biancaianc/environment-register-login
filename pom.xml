@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.environmentalreporting</groupId>
-    <artifactId>register-login</artifactId>
+    <artifactId>environmental</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>register-login</name>
     <description>Register and login</description>

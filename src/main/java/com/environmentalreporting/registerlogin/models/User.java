@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "users", schema = "env_schema",
+@Table(name = "user", schema = "env_schema",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
@@ -42,7 +42,6 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     Set<Event> events;
-
 
     public User() {
     }

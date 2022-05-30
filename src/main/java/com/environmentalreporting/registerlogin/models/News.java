@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 
 @Entity
@@ -47,4 +48,6 @@ public class News {
     @Column(length = 20)
     private ENews type;
 
+    @OneToMany(mappedBy="news")
+    private Set<Comment> comments;
 }

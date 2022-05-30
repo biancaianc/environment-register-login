@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "events", schema = "env_schema")
+@Table(name = "event", schema = "env_schema")
 @AllArgsConstructor
 public class Event {
     @Id
@@ -33,7 +33,7 @@ public class Event {
     @JsonIgnore
     @EqualsAndHashCode.Exclude @ToString.Exclude
     @JoinTable(
-            name = "users_events",
+            name = "user_event",
             joinColumns ={ @JoinColumn(name = "event_id")},
             inverseJoinColumns ={ @JoinColumn(name = "user_id")})
     private Set<User> users;

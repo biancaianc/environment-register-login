@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "reports", schema = "env_schema")
+@Table(name = "report", schema = "env_schema")
 @AllArgsConstructor
 public class Report {
     @Id
@@ -46,7 +46,9 @@ public class Report {
 
     private String imagePath;
 
-    public Report(String name, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type, String imagePath) {
+    private Integer reactions;
+
+    public Report(String name, String city, String region, Float latitude, Float longitude, User user, boolean approved, String description, String type, String imagePath, Integer reactions) {
         this.name = name;
         this.date = new Date();
         this.city = city;
@@ -58,6 +60,7 @@ public class Report {
         this.description = description;
         this.type = EReport.valueOf(type);
         this.imagePath = imagePath;
+        this.reactions = reactions;
     }
 
     public Report() {
