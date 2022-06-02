@@ -11,7 +11,6 @@
     <groupId>com.environmentalreporting</groupId>
     <artifactId>environmental</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>register-login</name>
     <description>Register and login</description>
     <properties>
         <java.version>11</java.version>
