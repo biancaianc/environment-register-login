@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
 
 import java.util.*;
 
@@ -55,7 +56,7 @@ public class EventServiceTest {
         events.add(event);
         List<EventResponse> eventResponses = new ArrayList<>();
         eventResponses.add(eventResponse);
-        when(eventRepository.findAll()).thenReturn(events);
+        when(eventRepository.findAll(any(Sort.class))).thenReturn(events);
         List<EventResponse> response = eventService.getEvents();
         assertEquals(eventResponses,response);
     }
