@@ -52,11 +52,6 @@ public class ReportService {
         return reportsFromUser;
     }
 
-    public void approveReport(Report report) {
-        report.setApproved(true);
-        reportRepository.save(report);
-    }
-
     public void deleteReport(long id) {
         Optional<Report> byId = reportRepository.findById(id);
         if(byId.isPresent()){
@@ -68,7 +63,7 @@ public class ReportService {
         }
     }
 
-    public Report createReport(ReportRequest report) throws Exception {
+    public Report createReport(ReportRequest report) throws AlreadyReportedInThatArea {
         Optional<User> user = userRepository.findByUsername(report.getUser());
         if (user.isPresent()) {
             User u = user.get();
@@ -78,30 +73,16 @@ public class ReportService {
             reportRepository.save(entity);
             return entity;
         }
-        else throw new Exception("Invalid user");
+        else throw new IllegalArgumentException("Invalid user");
     }
 
-    public Report updateReactions(Long id) throws Exception {
-        Optional<Report> byId = reportRepository.findById(id);
-        if (byId.isPresent()) {
-            Report report = byId.get();
-            if(report.getReactions() != null)
-                 report.setReactions(report.getReactions() + 1);
-            else
-                report.setReactions(1);
 
-            reportRepository.save(report);
-            return report;
-        }
-        throw new Exception("Error at update reactions");
-    }
-
-    public Report getReport(long id) throws Exception {
+    public Report getReport(long id) {
         Optional<Report> byId = reportRepository.findById(id);
         if(byId.isPresent()){
             return byId.get();
         }
-        throw  new Exception("Report not found");
+        throw  new IllegalArgumentException("Report not found");
     }
 
     public List<ReportResponse> getReports() {

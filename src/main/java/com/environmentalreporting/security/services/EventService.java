@@ -8,6 +8,7 @@ import com.environmentalreporting.repositories.EventRepository;
 import com.environmentalreporting.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -36,7 +37,7 @@ public class EventService {
     public List<EventResponse> getEvents() {
         List<EventResponse> eventResponses = new ArrayList<>();
         List<Event> events = new ArrayList<>();
-        eventRepository.findAll().forEach(events::add);
+        eventRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).forEach(events::add);
         events.forEach(x -> eventResponses.add(new EventResponse(x.getId(), x.getTitle(), x.getDescription(),
                 x.getDate(), x.getMaxNumberOfParticipants(), x.getLocation(), x.getTelephone(), x.getDuration(), x.getImagePath(), x.getUsers())));
         return eventResponses;

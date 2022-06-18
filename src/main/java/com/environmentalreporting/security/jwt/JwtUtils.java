@@ -20,6 +20,7 @@ public class JwtUtils {
     private int jwtExpirationMs;
     @Value("${bianca.app.jwtCookieName}")
     private String jwtCookie;
+
     public String getJwtFromCookies(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, jwtCookie);
         if (cookie != null) {

@@ -30,7 +30,6 @@ public class NewsService {
             newsRepository.save(entity);
             return entity;
         } else throw new Exception("Invalid user");
-
     }
 
     public News getNews(Long id) {
@@ -45,7 +44,7 @@ public class NewsService {
     public List<NewsResponse> getAllNews() {
         List<News> news = new ArrayList<>();
         List<NewsResponse> newsResponses = new ArrayList<>();
-        newsRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).forEach(news::add);
+        newsRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).forEach(news::add);
         news.forEach(x -> newsResponses.add(new NewsResponse(x.getId(), x.getDate(), x.getTitle(), x.getImagePath(), x.getShortDescription(), x.getContent(), x.getUser(), x.getType().name(), x.getComments())));
         return newsResponses;
     }

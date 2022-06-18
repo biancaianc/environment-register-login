@@ -7,6 +7,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class NewsRequest {
     private Date date;
 

@@ -10,7 +10,6 @@ import com.environmentalreporting.payload.responses.MessageResponse;
 import com.environmentalreporting.payload.responses.UserResponse;
 import com.environmentalreporting.repositories.UserRepository;
 import com.environmentalreporting.security.jwt.JwtUtils;
-import com.environmentalreporting.security.services.AuthenticationService;
 import com.environmentalreporting.security.services.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 

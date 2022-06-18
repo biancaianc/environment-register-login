@@ -2,15 +2,15 @@ package com.environmentalreporting.payload.responses;
 
 import com.environmentalreporting.models.EReport;
 import com.environmentalreporting.models.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class ReportResponse {
     private Long id;
 
@@ -53,7 +53,6 @@ public class ReportResponse {
         this.imagePath = imagePath;
         this.reactions = reactions;
     }
-
 
 }
 

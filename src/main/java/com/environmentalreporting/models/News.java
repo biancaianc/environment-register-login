@@ -13,6 +13,7 @@ import java.util.Set;
 @Table(name = "news", schema = "env_schema")
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,7 @@ public class News {
 
     private String shortDescription;
 
+    @Column(length = 10000)
     private String content;
 
     @ManyToOne(cascade = CascadeType.ALL)

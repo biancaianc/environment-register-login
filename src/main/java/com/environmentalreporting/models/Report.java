@@ -13,6 +13,7 @@ import java.util.Date;
 @Data
 @Table(name = "report", schema = "env_schema")
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
